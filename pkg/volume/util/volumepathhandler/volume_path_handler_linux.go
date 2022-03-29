@@ -1,3 +1,4 @@
+//go:build linux
 // +build linux
 
 /*
@@ -55,6 +56,7 @@ func (v VolumePathHandler) AttachFileDevice(path string) (string, error) {
 // DetachFileDevice takes a path to the attached block device and
 // detach it from block device.
 func (v VolumePathHandler) DetachFileDevice(path string) error {
+	klog.Warning("=======================> DetachFileDevice")
 	loopPath, err := v.GetLoopDevice(path, true)
 	if err != nil {
 		if err.Error() == ErrDeviceNotFound {
