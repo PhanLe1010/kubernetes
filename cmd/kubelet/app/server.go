@@ -1173,6 +1173,7 @@ func RunKubelet(kubeServer *options.KubeletServer, kubeDeps *kubelet.Dependencie
 	} else {
 		startKubelet(k, podCfg, &kubeServer.KubeletConfiguration, kubeDeps, kubeServer.EnableServer)
 		klog.InfoS("Started kubelet")
+		klog.InfoS("======> kubelet version v1.25.9-6119-cannot-termiate-block-vol-b1")
 	}
 	return nil
 }
