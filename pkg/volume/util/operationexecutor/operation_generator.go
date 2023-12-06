@@ -779,9 +779,11 @@ func (og *operationGenerator) checkForFailedMount(volumeToMount VolumeToMount, m
 }
 
 func (og *operationGenerator) markDeviceErrorState(volumeToMount VolumeToMount, devicePath, deviceMountPath string, mountError error, actualStateOfWorld ActualStateOfWorldMounterUpdater) {
+	klog.V(1).Infof("===================> volumeToMount.VolumeName %v, getDeviceMountState %v", volumeToMount.VolumeName, actualStateOfWorld.GetDeviceMountState(volumeToMount.VolumeName))
 	if volumetypes.IsOperationFinishedError(mountError) &&
 		actualStateOfWorld.GetDeviceMountState(volumeToMount.VolumeName) == DeviceMountUncertain {
 		// Only devices which were uncertain can be marked as unmounted
+		klog.V(1).Info("===================> 1")
 		markDeviceUnmountError := actualStateOfWorld.MarkDeviceAsUnmounted(volumeToMount.VolumeName)
 		if markDeviceUnmountError != nil {
 			klog.Errorf(volumeToMount.GenerateErrorDetailed("MountDevice.MarkDeviceAsUnmounted failed", markDeviceUnmountError).Error())
@@ -793,6 +795,7 @@ func (og *operationGenerator) markDeviceErrorState(volumeToMount VolumeToMount, 
 		actualStateOfWorld.GetDeviceMountState(volumeToMount.VolumeName) == DeviceNotMounted {
 		// only devices which are not mounted can be marked as uncertain. We do not want to mark a device
 		// which was previously marked as mounted here as uncertain.
+		klog.V(1).Info("===================> 2")
 		markDeviceUncertainError := actualStateOfWorld.MarkDeviceAsUncertain(volumeToMount.VolumeName, devicePath, deviceMountPath, volumeToMount.SELinuxLabel)
 		if markDeviceUncertainError != nil {
 			klog.Errorf(volumeToMount.GenerateErrorDetailed("MountDevice.MarkDeviceAsUncertain failed", markDeviceUncertainError).Error())
